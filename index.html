@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            background-image: url("img1.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 100%;
+            width: 100%;
+        }
+
+        #box {
+            z-index: 9999;
+            position: relative;
+            display: flex;
+            width: 130px;
+            height: 200px;
+            margin: auto;
+            transform-style: preserve-3d;
+            transform: rotateX(-10deg);
+            animation: fadenum 16s ease-in-out infinite;
+        }
+
+        #box>div {
+            transform-style: preserve-3d;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            line-height: 200px;
+            font-size: 50px;
+            text-align: center;
+            box-shadow: 0 0 10px #fff;
+            -webkit-box-reflect: below 10px -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, .8) 100%);
+        }
+
+        @keyframes fadenum {
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(360deg);
+            }
+
+        }
+
+        #box p {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            width: 1200px;
+            height: 1200px;
+            background: -webkit-radial-gradient(center center, 600px 600px, rgba(50, 50, 50, 1), rgba(0, 0, 0, 0));
+            border-radius: 50%;
+            transform: rotateX(90deg) translate3d(-600px, 0, -105px);
+        }
+        #codepen-link {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            height: 40px;
+            width: 40px;
+            z-index: 10;
+            border-radius: 50%;
+            box-sizing: border-box;
+            background-image: url("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimgbdb3.bendibao.com%2Fbjbdb%2F201810%2F08%2F20181008171234_54810.gif&refer=http%3A%2F%2Fimgbdb3.bendibao.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1662101894&t=98662bfc138039b4c5e7db1c007c83fc");
+            background-position: center center;
+            background-size: cover;
+            opacity: 0.5;
+            -webkit-transition: all 0.25s;
+            transition: all 0.25s;
+        }
+
+        #codepen-link:hover {
+            opacity: 0.8;
+            box-shadow: 0 0 6px #efefef;
+        }
+    </style>
+</head>
+
+<body>
+    <audio src="y.mp3" preload="none" autoplay></audio>
+    <div id="box">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <p></p>
+    </div>
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+</body>
+<script>
+    setTimeout(init, 100);
+
+    function init() {
+        var obox = document.getElementById('box'),
+            aDiv = obox.getElementsByTagName('div');
+
+
+        for (var i = 0; i < aDiv.length; i++) {
+            aDiv[i].style.background = "url(img/img" + (i + 1) + ".jpg) center/cover";
+            aDiv[i].style.transform = "rotateY(" + (i * 36) + "deg) translate3d(0,0,350px)";
+            aDiv[i].style.transition = "transform 1s " + (aDiv.length - i) * 0.2 + "s";
+            aDiv[i].onmousemove = function (e) {
+                obox.style.animationPlayState = 'paused'
+            }
+            aDiv[i].onmouseleave = function (e) {
+                obox.style.animationPlayState = 'running'
+
+            }
+        }
+        var sX,
+            sY,
+            nX,
+            nY,
+            desX = 0,
+            desY = 0,
+            tX = 0,
+            tY = 10,
+            index = 0;
+
+        document.onmousedown = function (e) {
+            clearInterval(obox.timer);
+            e = e || window.event;
+            var sX = e.clientX,
+                sY = e.clientY;
+            this.onmousemove = function (e) {
+                e = e || window.event;
+                var nX = e.clientX,
+                    nY = e.clientY;
+                desX = nX - sX;
+                desY = nY - sY;
+                tX += desX * 0.1;
+                tY += desY * 0.1;
+
+                obox.style.transform = "rotateX(" + (-tY) + "deg) rotateY(" + tX + "deg)";
+                sX = nX;
+                sY = nY;
+            }
+            this.onmouseup = function () {
+                this.onmousemove = this.onmouseup = null;
+                obox.timer = setInterval(function () {
+                    desX *= 0.95;
+                    desY *= 0.95;
+                    tX += desX * 0.1;
+                    tY += desY * 0.1;
+                    obox.style.transform = "rotateX(" + (-tY) + "deg) rotateY(" + tX + "deg)";
+                    if (Math.abs(desX) < 0.5 && Math.abs(desY) < 0.5) {
+                        clearInterval(obox.timer);
+                    }
+                }, 13);
+            }
+            return false;
+        }
+        mousewheel(document, function (e) {
+            e = e || window.event;
+            var d = e.wheelDelta / 120 || -e.detail / 3;
+            if (d > 0) {
+                index -= 20;
+            } else {
+                index += 30;
+            }
+            (index < (-1050) && (index = (-1050)));
+            document.body.style.perspective = 1000 + index + "px";
+        })
+
+        function mousewheel(obj, fn) {
+            document.onmousewheel === null ? obj.onmousewheel = fn : addEvent(obj, "DOMMouseScroll", fn)
+        }
+
+        function addEvent(obj, eName, fn) {
+            obj.attachEvent ? obj.attachEvent("on" + eName, fn) : obj.addEventListener(eName, fn);
+        }
+    }
+</script>
+
+</html>

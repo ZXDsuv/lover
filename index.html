@@ -11,25 +11,56 @@
             margin: 0;
             padding: 0;
         }
-
+        
         html,
         body {
             height: 100%;
         }
-
+        .model{
+            position: fixed;
+            right: 0;left: 0;top: 0;bottom: 0;
+            background: rgba(0, 0, 0,.8);
+            font-size: 33px;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            cursor: pointer;
+        }
         body {
             display: flex;
             perspective: 1000px;
             transform-style: preserve-3d;
-            background-image: url("img1.jpg");
+            background-image: url("static/bg/1.jpg");
             background-repeat: no-repeat;
-            background-size: cover;
+            background-size: 100% auto;
             height: 100%;
             width: 100%;
+            /* animation: bg 0.2s ease-in;
+            transition: all 0.5s; */
         }
-
+        
+        @keyframes bg {
+            0% {
+                opacity: 1;
+            }
+            25% {
+                opacity: 0.75;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            75% {
+                opacity: 0.25;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        
         #box {
-            z-index: 9999;
+            z-index: 0;
             position: relative;
             display: flex;
             width: 130px;
@@ -37,9 +68,10 @@
             margin: auto;
             transform-style: preserve-3d;
             transform: rotateX(-10deg);
-            animation: fadenum 16s ease-in-out infinite;
+            transition: all 0.5s;
+            /* animation: fadenum 16s ease-in-out infinite; */
         }
-
+        
         #box>div {
             transform-style: preserve-3d;
             position: absolute;
@@ -50,34 +82,35 @@
             line-height: 200px;
             font-size: 50px;
             text-align: center;
-            box-shadow: 0 0 10px #fff;
+            /* box-shadow: 0 0 10px #fff; */
             -webkit-box-reflect: below 10px -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, .8) 100%);
         }
-
+        
         @keyframes fadenum {
             0% {
                 transform: rotateY(0deg);
             }
-
             100% {
                 transform: rotateY(360deg);
             }
-
         }
-
+        
         #box p {
             position: absolute;
             left: 0;
             top: 0;
             bottom: 0;
             right: 0;
+            color: #fff;
             margin: auto;
+            font-size: 66px;
             width: 1200px;
             height: 1200px;
             background: -webkit-radial-gradient(center center, 600px 600px, rgba(50, 50, 50, 1), rgba(0, 0, 0, 0));
             border-radius: 50%;
             transform: rotateX(90deg) translate3d(-600px, 0, -105px);
         }
+        
         #codepen-link {
             position: absolute;
             bottom: 30px;
@@ -94,16 +127,63 @@
             -webkit-transition: all 0.25s;
             transition: all 0.25s;
         }
-
+        
         #codepen-link:hover {
             opacity: 0.8;
             box-shadow: 0 0 6px #efefef;
+        }
+        
+        .btn-box {
+            display: flex;
+            margin-top: 50px;
+        }
+        
+        .btn-box>div {
+            width: 180px;
+            height: 55px;
+            background: linear-gradient(148deg, #e6ceb0 0%, #695213 100%);
+            border-radius: 6px 6px 6px 6px;
+            color: #695213;
+            text-align: center;
+            line-height: 55px;
+            font-size: 22px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        .btn-box>div:hover {
+            background: linear-gradient(148deg, #e6a75c 0%, #473608 100%);
+            color: #e6ceb0;
+        }
+        
+        .describe {
+            font-size: 33px;
+            color: white;
+            letter-spacing: 0.2rem;
+            font-size: 1.5rem;
+            background-image: -webkit-linear-gradient(left, #f5fbfc, #0bf7eb 25%, #f1f3cd 50%, #f7ea63 75%, #a0c0c9);
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-background-size: 200% 100%;
+            -webkit-animation: maskedAnimation 4s infinite linear;
+            padding: 50px;
+        }
+        
+        @keyframes maskedAnimation {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: -100% 0;
+            }
         }
     </style>
 </head>
 
 <body>
-    <audio src="y.mp3" preload="none" autoplay></audio>
+    <div class="model">点击开始观看</div>
+    <div class="describe">凤宝贝已经和阿斌在一起<span class="showTime">500</span>天啦</div>
+    <audio src="./static/mp3/y.mp3"  class="audio" preload="auto"></audio>
     <div id="box">
         <div></div>
         <div></div>
@@ -115,44 +195,58 @@
         <div></div>
         <div></div>
         <div></div>
-        <p></p>
     </div>
-    <div class="stars">
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
+    <div class="btn-box">
+        <div>轮播模式</div>
+        <div>拖拽模式</div>
     </div>
 </body>
 <script>
-    setTimeout(init, 100);
+    let model=document.getElementsByClassName('model'),
+        mDiv=document.querySelectorAll('#box>div'),
+        audio=document.getElementsByClassName('audio')
+
+        model[0].addEventListener('click',()=>{
+            init()
+            
+    })
+    // setTimeout(init, 100);
 
     function init() {
-        var obox = document.getElementById('box'),
-            aDiv = obox.getElementsByTagName('div');
+        model[0].style.display='none'
+        audio[0].play()
+        for (let index = 0; index < mDiv.length; index++) {
+                const el = mDiv[index];
+                el.style.boxShadow='0 0 10px #fff'
+            
+            }
+        let obox = document.getElementById('box'),
+            aDiv = obox.getElementsByTagName('div'),
+            bDiv = document.querySelectorAll('.btn-box > div'),
+            showTime = document.querySelector('.showTime'),
+            swiper = true,
+            drag = false,
+            isPaused = false;
 
-
-        for (var i = 0; i < aDiv.length; i++) {
-            aDiv[i].style.background = "url(img/img" + (i + 1) + ".jpg) center/cover";
+        for (let i = 0; i < aDiv.length; i++) {
+            aDiv[i].style.background = "url(static/img/img" + (i + 1) + ".jpg) center/cover";
             aDiv[i].style.transform = "rotateY(" + (i * 36) + "deg) translate3d(0,0,350px)";
             aDiv[i].style.transition = "transform 1s " + (aDiv.length - i) * 0.2 + "s";
-            aDiv[i].onmousemove = function (e) {
-                obox.style.animationPlayState = 'paused'
+            aDiv[i].onmousemove = function(e) {
+                isPaused = true;
+                annimationPaused(isPaused);
             }
-            aDiv[i].onmouseleave = function (e) {
-                obox.style.animationPlayState = 'running'
-
+            aDiv[i].onmouseleave = function(e) {
+                isPaused = false;
+                annimationPaused(isPaused);
             }
         }
-        var sX,
+        bDiv.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                change(index);
+            })
+        })
+        let sX,
             sY,
             nX,
             nY,
@@ -162,14 +256,41 @@
             tY = 10,
             index = 0;
 
-        document.onmousedown = function (e) {
+        function annimationPaused(flag) {
+            flag ? obox.style.animationPlayState = 'paused' : obox.style.animationPlayState = 'running'
+        }
+
+        function change(model) {
+            if (model == 0) {
+                swiper = true;
+                drag = false;
+                palyAnimation()
+            } else {
+                stopAnimation()
+                swiper = false;
+                drag = true;
+            }
+        }
+
+        function palyAnimation() {
+            obox.style.animation = 'fadenum 16s ease-in-out infinite'
+        }
+
+        function stopAnimation() {
+            obox.style.animation = ''
+        }
+        palyAnimation()
+        document.onmousedown = function(e) {
+            if (swiper) return;
+            console.log(swiper, "模式")
+            stopAnimation()
             clearInterval(obox.timer);
             e = e || window.event;
-            var sX = e.clientX,
+            let sX = e.clientX,
                 sY = e.clientY;
-            this.onmousemove = function (e) {
+            this.onmousemove = function(e) {
                 e = e || window.event;
-                var nX = e.clientX,
+                let nX = e.clientX,
                     nY = e.clientY;
                 desX = nX - sX;
                 desY = nY - sY;
@@ -180,9 +301,14 @@
                 sX = nX;
                 sY = nY;
             }
-            this.onmouseup = function () {
+            this.onmouseup = function() {
+                if (swiper) {
+                    palyAnimation()
+                    return
+                }
+
                 this.onmousemove = this.onmouseup = null;
-                obox.timer = setInterval(function () {
+                obox.timer = setInterval(function() {
                     desX *= 0.95;
                     desY *= 0.95;
                     tX += desX * 0.1;
@@ -195,13 +321,13 @@
             }
             return false;
         }
-        mousewheel(document, function (e) {
+        mousewheel(document, function(e) {
             e = e || window.event;
-            var d = e.wheelDelta / 120 || -e.detail / 3;
+            let d = e.wheelDelta / 120 || -e.detail / 3;
             if (d > 0) {
-                index -= 20;
+                index -= 100;
             } else {
-                index += 30;
+                index += 100;
             }
             (index < (-1050) && (index = (-1050)));
             document.body.style.perspective = 1000 + index + "px";
@@ -214,6 +340,52 @@
         function addEvent(obj, eName, fn) {
             obj.attachEvent ? obj.attachEvent("on" + eName, fn) : obj.addEventListener(eName, fn);
         }
+
+
+        function handlerDateDurationCurrent(time) {
+            let d1 = new Date(time)
+            let d2 = new Date()
+
+            let cha = Math.abs(d2.getTime() - d1.getTime())
+            let days = parseInt(cha / (24 * 60 * 60 * 1000))
+            let hours = parseInt(cha % (24 * 60 * 60 * 1000) / (60 * 60 * 1000))
+            let mins = parseInt(cha % (60 * 60 * 1000) / (60 * 1000))
+            if (days) {
+                return days
+            }
+        }
+
+        let preDate = '2021-11-18'
+        let result = handlerDateDurationCurrent(preDate)
+        showTime.innerHTML = result
+
+        let bg = document.getElementsByTagName('body')
+        console.log(bg)
+
+        function changeBg() {
+            let arr = ['./static/bg/1.jpg', './static/bg/bg1.jpg', './static/bg/bg2.jpg', './static/bg/bg3.jpg', './static/bg/bg4.jpg'],
+                count = 0,
+                min = 0,
+                max = arr.length - 1,
+                timer, el;
+            clearInterval(timer)
+            timer = setInterval(() => {
+
+                count++
+                if (count > max) {
+                    count = 0
+                }
+                el = arr[count]
+
+                bg[0].style.backgroundImage = ""
+
+                bg[0].style.backgroundImage = `url("${el}")`
+            }, 3000);
+
+
+
+        }
+        changeBg()
     }
 </script>
 
